@@ -31,13 +31,14 @@ local table  = require "table"
 local nixio  = require "nixio"
 local fs     = require "nixio.fs"
 local uci    = require "luci.model.uci"
+local string = require "string"
 
 local luci  = {}
 luci.util   = require "luci.util"
 luci.ip     = require "luci.ip"
 
-local tonumber, ipairs, pairs, pcall, type, next, setmetatable, require, select =
-	tonumber, ipairs, pairs, pcall, type, next, setmetatable, require, select
+local tonumber, tostring, ipairs, pairs, pcall, type, next, setmetatable, require, select =
+	tonumber, tostring, ipairs, pairs, pcall, type, next, setmetatable, require, select
 
 
 --- LuCI Linux and POSIX system utilities.
@@ -194,6 +195,53 @@ function sysinfo()
 		system
 
 	return system, model, memtotal, memcached, membuffers, memfree, bogomips, swaptotal, swapcached, swapfree
+end
+
+function dashboard()
+    local host = "google.com"
+    local connectedToInternet = tostring(net.pingtest(host) == 0)
+    local pingSpeed = pingSpeedTest(host)
+    return
+        [[{
+            "internet": {
+                "name": "Internet",
+                "uploadSpeed": "27.4",
+                "uploadSpeedMetric": "mb/s",
+                "downloadSpeed": "37.5",
+                "downloadSpeedMetric": "mb/s",
+                "pingSpeed":"]]..pingSpeed..[[",
+                "pingSpeedMetric": "ms",
+                "connected":"]]..connectedToInternet..[["
+            },
+            "lanNetwork": {
+                "name": "LAN Network",
+                "uploadSpeed": "32.4",
+                "uploadSpeedMetric": "mb/s",
+                "downloadSpeed": "12.5",
+                "downloadSpeedMetric": "mb/s",
+                "devices": "3"
+            },
+            "privateWifi": {
+                "name": "Private Wifi",
+                "uploadSpeed": "17.4",
+                "uploadSpeedMetric": "mb/s",
+                "downloadSpeed": "15.5",
+                "downloadSpeedMetric": "mb/s",
+                "devices": "3",
+                "on": false
+            },
+            "openWireless": {
+                "name": "Openwireless.org",
+                "uploadSpeed": "17.4",
+                "uploadSpeedMetric": "mb/s",
+                "downloadSpeed": "15.5",
+                "downloadSpeedMetric": "mb/s",
+                "maxBandwithPercent": "5",
+                "maxMonthlyBandwith": "100",
+                "maxMonthlyBandwithMetric": "mb",
+                "on": true
+            }
+        }]]
 end
 
 --- Retrieves the output of the "logread" command.
@@ -679,6 +727,13 @@ function net.pingtest(host)
 	return os.execute("ping -c1 '"..host:gsub("'", '').."' >/dev/null 2>&1")
 end
 
+function pingSpeedTest(host)
+    pingResult = io.popen("ping -c1 "..host.." | grep time"):read("*a")
+    positionOfTimeLabel, lastUnusedCharacter = string.find(pingResult, "time=")
+    distanceFromEndOfLine = -5
+    firstDigit = lastUnusedCharacter + 1
+    return string.sub(pingResult, firstDigit, distanceFromEndOfLine)
+end
 
 --- LuCI system utilities / process related functions.
 -- @class	module
