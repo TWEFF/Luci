@@ -236,9 +236,10 @@ function dashboard()
                 "uploadSpeedMetric": "mb/s",
                 "downloadSpeed": "15.5",
                 "downloadSpeedMetric": "mb/s",
-                "maxBandwithPercent": "5",
-                "maxMonthlyBandwith": "100",
-                "maxMonthlyBandwithMetric": "mb",
+                "maxBandwidthPercent": "5",
+                "maxMonthlyBandwidth": "100",
+                "maxMonthlyBandwidthMetric": "mb",
+                "monthlyBandwidthUsage": "23",
                 "on": true
             }
         }]]
