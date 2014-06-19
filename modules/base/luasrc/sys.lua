@@ -280,6 +280,13 @@ function update_settings(setting, value)
         }]]
 end
 
+function toggle(name, state)
+    return
+        [[{
+            "]]..name..[[": "]]..state..[["
+        }]]
+end
+
 
 --- Retrieves the output of the "logread" command.
 -- @return	String containing the current log buffer
