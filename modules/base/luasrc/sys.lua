@@ -273,6 +273,14 @@ function settings()
         }]]
 end
 
+function update_settings(setting, value)
+    return
+        [[{
+            "]]..setting..[[": "]]..value..[["
+        }]]
+end
+
+
 --- Retrieves the output of the "logread" command.
 -- @return	String containing the current log buffer
 function syslog()
