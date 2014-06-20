@@ -1,0 +1,7 @@
+config 'wifi-iface'
+        option 'device'     'wl0'
+        option 'network'    'lan'
+        option 'mode'       'ap'
+        option 'ssid'       'MyWifiAP'
+        option 'encryption' 'psk2'
+        option 'key'        'secret passphrase'
