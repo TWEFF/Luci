@@ -1,2 +1,0 @@
-scp -P 2200 modules/rpc/luasrc/jsonrpcbind/uci.lua root@localhost:/usr/lib/lua/luci/jsonrpcbind
-scp -P 2200 wireless root@localhost:/etc/config
